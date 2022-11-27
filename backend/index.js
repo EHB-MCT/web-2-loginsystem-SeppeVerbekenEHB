@@ -1,10 +1,15 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const {
+    MongoClient
+} = require("mongodb");
 
-let users= [];
+let users = [];
 
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({
+    extended: false
+}));
 app.use(cors())
 app.use(express.json())
 
@@ -24,7 +29,9 @@ app.post(`/register`, async (req, res) => {
         }
         users.push(user)
         console.log(users)
-        res.status(201).send({status: `user succesfully saved with username ${req.body.username}`})
+        res.status(201).send({
+            status: `user succesfully saved with username ${req.body.username}`
+        })
         return;
     } catch (error) {
         console.log(error)
@@ -39,13 +46,15 @@ app.post(`/login`, async (req, res) => {
     try {
         const found = users.find(element => element.password == req.body.password);
         console.log(found)
-        res.status(201).send({status: `user succesfully logged in as : ${found.password}`})
+        res.status(201).send({
+            status: `user succesfully logged in as : ${found.password}`
+        })
         return;
     } catch (error) {
         console.log(error)
         res.status(500).send(`An error has occured`);
     }
-    
+
 });
 app.listen(3000);
 console.log("app running at http://localhost:3000");
